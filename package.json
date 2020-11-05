@@ -1,5 +1,5 @@
 {
-  "name": "it-incubator-todolist-ts",
+  "name": "ReactToDoList",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -36,5 +36,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "description": "light spa for dev",
+  "main": "index.js",
+  "repository": "git@github.com:maximLomako/ReactToDoList.git",
+  "author": "maximLomako <maxim.lomako@icloud.com>",
+  "license": "MIT"
 }
