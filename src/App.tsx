@@ -13,7 +13,7 @@ export type TodoListType = {
 }
 
 type TaskStateType = {
-  [key: string] : Array<TaskType>
+  [key: string]: Array<TaskType>
 }
 
 function App() {
@@ -49,6 +49,15 @@ function App() {
     setTasks({...tasksObj});
   }
 
+  function changeTaskTitle(taskId: string, newTitle: string, todolistId: string) {
+    let tasks = tasksObj[todolistId];
+    let task = tasks.find(t => t.id === taskId)
+    if (task) {
+      task.title = newTitle
+    }
+    setTasks({...tasksObj});
+  }
+
   let todolistId1 = v1();
   let todolistId2 = v1();
 
@@ -62,6 +71,14 @@ function App() {
     setTodolists(filteredTodolist);
     delete tasksObj[todolistId]
     setTasks({...tasksObj});
+  }
+
+  let changeTodolistTitle = (id: string, newTitle: string) => {
+    const todolist = todolists.find(tl => tl.id === id);
+    if (todolist) {
+      todolist.title = newTitle;
+      setTodolists([...todolists]);
+    }
 
   }
 
@@ -86,7 +103,7 @@ function App() {
     setTodolists([todolist, ...todolists]);
     setTasks({
       ...tasksObj,
-     [todolist.id] : []
+      [todolist.id]: []
     });
   }
 
@@ -113,9 +130,11 @@ function App() {
                            addTask={addTask}
                            removeTask={removeTask}
                            changeTaskStatus={changeStatus}
+                           changeTaskTitle={changeTaskTitle}
                            changeFilter={changeFilter}
                            filter={tl.filter}
                            removeTodolist={removeTodolist}
+                           changeTodolistTitle={changeTodolistTitle}
           />
         })
       }
