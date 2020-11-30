@@ -1,5 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 import {FilterValuesType} from "./App";
+import AddItemForm from "./AddItemForm";
 
 
 export type TaskType = {
@@ -23,51 +24,18 @@ type TodolistPropsType = {
 
 export function Todolist(props: TodolistPropsType) {
 
-  const [newTaskTitle, setNewTaskTitle] = useState('');
-  const [error, setError] = useState<string | null>(null);
-
-  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewTaskTitle(e.currentTarget.value)
-  }
-  const onKeyChangeHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-    setError(null)
-    if (e.ctrlKey === true && e.key === 'Enter' && newTaskTitle.trim() !== '') {
-      props.addTask(newTaskTitle.trim(), props.id)
-      setNewTaskTitle('')
-    }
-  }
-  const addTask = () => {
-    if (newTaskTitle.trim() !== '') {
-      props.addTask(newTaskTitle, props.id)
-      setNewTaskTitle('')
-      setError(null);
-    } else {
-      setError('Title is required');
-    }
-
-  }
   const onAllClickHandler = () => props.changeFilter('all', props.id);
   const onActiveClickHandler = () => props.changeFilter('active', props.id);
   const onCompletedClickHandler = () => props.changeFilter('completed', props.id);
+  const removeTodolist = () => props.removeTodolist(props.id);
+  const addTask = (title: string) => props.addTask(title, props.id);
 
-  const removeTodolist = () => {
-    props.removeTodolist(props.id)
-  }
   return (
     <div>
       <h3>{props.title}
         <button onClick={removeTodolist}>x</button>
       </h3>
-      <div>
-        <input value={newTaskTitle}
-               onChange={onChangeHandler}
-               onKeyPress={onKeyChangeHandler}
-               className={error ? 'error' : ''}
-        />
-
-        <button onClick={addTask}>+</button>
-        {error && <div className="error-message">{error}</div>}
-      </div>
+      <AddItemForm addItem={addTask} />
       <ul>
         {
           props.tasks.map(t => {
@@ -108,3 +76,4 @@ export function Todolist(props: TodolistPropsType) {
     </div>
   )
 }
+
