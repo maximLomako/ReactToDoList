@@ -1,6 +1,7 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import React, {ChangeEvent} from "react";
 import {FilterValuesType} from "./App";
 import AddItemForm from "./AddItemForm";
+import {EditableSpan} from "./EditableSpan";
 
 
 export type TaskType = {
@@ -35,7 +36,7 @@ export function Todolist(props: TodolistPropsType) {
       <h3>{props.title}
         <button onClick={removeTodolist}>x</button>
       </h3>
-      <AddItemForm addItem={addTask} />
+      <AddItemForm addItem={addTask}/>
       <ul>
         {
           props.tasks.map(t => {
@@ -55,7 +56,7 @@ export function Todolist(props: TodolistPropsType) {
                        checked={t.isDone}
                        onChange={onChangeHandler}
                 />
-                <span>{t.title}</span>
+                <EditableSpan title={t.title}/>
                 <button onClick={onRemoveHandler}>x</button>
               </li>
             }
