@@ -1,4 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import {TextField, IconButton, Icon} from "@material-ui/core";
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
 type AddItemFormPropsType = {
   addItem: (title: string) => void
@@ -8,15 +10,15 @@ type AddItemFormPropsType = {
 const AddItemForm = (props: AddItemFormPropsType) => {
 
   const [newTaskTitle, setNewTaskTitle] = useState('');
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<boolean>(false);
 
   const addTask = () => {
     if (newTaskTitle.trim() !== '') {
       props.addItem(newTaskTitle)
       setNewTaskTitle('')
-      setError(null);
+      setError(false);
     } else {
-      setError('Title is required');
+      setError(true);
     }
   }
 
@@ -24,7 +26,7 @@ const AddItemForm = (props: AddItemFormPropsType) => {
     setNewTaskTitle(e.currentTarget.value)
   }
   const onKeyChangeHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-    setError(null)
+    setError(false)
     if (e.ctrlKey === true && e.key === 'Enter' && newTaskTitle.trim() !== '') {
       props.addItem(newTaskTitle.trim())
       setNewTaskTitle('')
@@ -32,13 +34,19 @@ const AddItemForm = (props: AddItemFormPropsType) => {
   }
   return (
     <div>
-      <input value={newTaskTitle}
-             onChange={onChangeHandler}
-             onKeyPress={onKeyChangeHandler}
-             className={error ? 'error' : ''}
+      <TextField style={{padding: "10px"}} id={error ? 'standard-error' : "standard-basic"}
+                 label="Type value"
+                 variant="outlined"
+                 value={newTaskTitle}
+                 onChange={onChangeHandler}
+                 onKeyPress={onKeyChangeHandler}
+                 error={!!error}
+                 helperText={error ? 'Incorrect entry.' : ""}
       />
 
-      <button onClick={addTask}>+</button>
+      <IconButton onClick={addTask} color="primary">
+        <AddCircleOutlineIcon />
+      </IconButton>
       {error && <div className="error-message">{error}</div>}
     </div>
   )
