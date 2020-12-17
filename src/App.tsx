@@ -13,7 +13,6 @@ export type TodoListType = {
   title: string
   filter: 'all' | 'completed' | 'active'
 }
-
 type TaskStateType = {
   [key: string]: Array<TaskType>
 }
@@ -26,14 +25,12 @@ function App() {
     tasksObj[todolistId] = newTasks;
     setTasks({...tasksObj});
   }
-
   function removeTask(id: string, todolistId: string) {
     let tasks = tasksObj[todolistId];
     let filteredTasks = tasks.filter(t => t.id !== id);
     tasksObj[todolistId] = filteredTasks;
     setTasks({...tasksObj});
   }
-
   function changeFilter(value: FilterValuesType, todolistId: string) {
     let todolist = todolists.find(tl => tl.id === todolistId);
     if (todolist) {
@@ -41,7 +38,6 @@ function App() {
       setTodolists([...todolists]);
     }
   }
-
   function changeStatus(taskId: string, isDone: boolean, todolistId: string) {
     let tasks = tasksObj[todolistId];
     let task = tasks.find(t => t.id === taskId)
@@ -50,7 +46,6 @@ function App() {
     }
     setTasks({...tasksObj});
   }
-
   function changeTaskTitle(taskId: string, newTitle: string, todolistId: string) {
     let tasks = tasksObj[todolistId];
     let task = tasks.find(t => t.id === taskId)
