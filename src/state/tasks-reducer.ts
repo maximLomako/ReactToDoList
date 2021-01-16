@@ -1,5 +1,5 @@
 import {TaskStateType} from "../App";
-import {AddTodoListActionType, RemoveTodolistActionType} from "./todolists-reducer";
+import {AddTodoListActionType, RemoveTodolistActionType, todolistId1, todolistId2} from "./todolists-reducer";
 import {v1} from "uuid";
 
 const REMOVE_TASK = 'REMOVE_TASK';
@@ -37,7 +37,19 @@ export type ActionsType =
   | AddTodoListActionType
   | RemoveTodolistActionType;
 
-export const tasksReducer = (state: TaskStateType, action: ActionsType): TaskStateType => {
+const initialState: TaskStateType = {
+  [todolistId1]: [
+    {id: v1(), title: 'css', isDone: true},
+    {id: v1(), title: 'html', isDone: true},
+    {id: v1(), title: 'react', isDone: false}
+  ],
+  [todolistId2]: [
+    {id: v1(), title: 'made 15 game', isDone: true},
+    {id: v1(), title: 'lear tuesday program react in 2 weeks', isDone: true},
+  ],
+};
+
+export const tasksReducer = (state: TaskStateType = initialState, action: ActionsType): TaskStateType => {
   switch (action.type) {
     case REMOVE_TASK: {
       const stateCopy = {...state}
@@ -54,19 +66,13 @@ export const tasksReducer = (state: TaskStateType, action: ActionsType): TaskSta
     case CHANGE_TASK_STATUS: {
       const stateCopy = {...state};
       const tasks = stateCopy[action.todolistID]
-      const task = tasks.find(t => t.id === action.taskID)
-      if (task) {
-        task.isDone = action.isDone
-      }
+      stateCopy[action.todolistID] = tasks.map(t => t.id === action.taskID ? {...t, isDone: action.isDone} : t)
       return stateCopy
     }
     case CHANGE_TASK_TITLE: {
       const stateCopy = {...state};
       const tasks = stateCopy[action.todolistID]
-      const task = tasks.find(t => t.id === action.taskID)
-      if (task) {
-        task.title = action.title
-      }
+      stateCopy[action.todolistID] = tasks.map(t => t.id === action.taskID ? {...t, title: action.title} : t)
       return stateCopy
     }
     case 'ADD-TODOLIST': {
@@ -80,7 +86,7 @@ export const tasksReducer = (state: TaskStateType, action: ActionsType): TaskSta
       return copyState
     }
     default:
-      throw new Error("I don't understand this type")
+      return state;
   }
 }
 
