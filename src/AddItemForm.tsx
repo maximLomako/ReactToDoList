@@ -1,5 +1,5 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
-import {TextField, IconButton, Icon} from "@material-ui/core";
+import {IconButton, TextField} from "@material-ui/core";
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
 type AddItemFormPropsType = {
@@ -7,11 +7,9 @@ type AddItemFormPropsType = {
 
 }
 
-const AddItemForm = (props: AddItemFormPropsType) => {
-
+export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
   const [newTaskTitle, setNewTaskTitle] = useState('');
-  const [error, setError] = useState<boolean>(false);
-
+  const [error, setError] = useState<boolean | null>(false);
   const addTask = () => {
     if (newTaskTitle.trim() !== '') {
       props.addItem(newTaskTitle)
@@ -26,8 +24,10 @@ const AddItemForm = (props: AddItemFormPropsType) => {
     setNewTaskTitle(e.currentTarget.value)
   }
   const onKeyChangeHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-    setError(false)
-    if (e.ctrlKey === true && e.key === 'Enter' && newTaskTitle.trim() !== '') {
+    if (error !== null) {
+      setError(null);
+    }
+    if (e.ctrlKey && e.key === 'Enter' && newTaskTitle.trim() !== '') {
       props.addItem(newTaskTitle.trim())
       setNewTaskTitle('')
     }
@@ -45,12 +45,10 @@ const AddItemForm = (props: AddItemFormPropsType) => {
       />
 
       <IconButton onClick={addTask} color="primary">
-        <AddCircleOutlineIcon />
+        <AddCircleOutlineIcon/>
       </IconButton>
       {error && <div className="error-message">{error}</div>}
     </div>
   )
-}
-
-export default AddItemForm;
+});
 
