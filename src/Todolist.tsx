@@ -27,16 +27,16 @@ type TodolistPropsType = {
 
 export const Todolist = React.memo((props: TodolistPropsType) => {
   const onAllClickHandler = useCallback(() => props.changeFilter('all', props.id)
-    , [props.changeFilter, props.id]);
+    , [props]);
   const onActiveClickHandler = useCallback(() => props.changeFilter('active', props.id)
-    , [props.changeFilter, props.id]);
+    , [props]);
   const onCompletedClickHandler = useCallback(() => props.changeFilter('completed', props.id)
-    , [props.changeFilter, props.id]);
+    , [props]);
   const removeTodolist = () => props.removeTodolist(props.id);
   const changeTodolistTitle = useCallback((newTitle: string) => {
     props.changeTodolistTitle(props.id, newTitle);
-  }, [props.changeTodolistTitle, props.id])
-  const addTask = useCallback((title: string) => props.addTask(title, props.id), [props.addTask, props.id]);
+  }, [props])
+  const addTask = useCallback((title: string) => props.addTask(title, props.id), [props]);
 
   let tasksForTodolist = props.tasks;
   if (props.filter === 'completed') {
