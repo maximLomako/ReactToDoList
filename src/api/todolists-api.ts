@@ -32,12 +32,12 @@ type GetTasksResponse = {
 }
 
 type UpdateTaskModel = {
-  title: string
-  description: string
-  status: number
-  priority: number
-  startDate: string
-  deadline: string
+  title?: string
+  description?: string
+  status?: number
+  priority?: number
+  startDate?: string
+  deadline?: string
 }
 
 const settings = {
@@ -67,6 +67,12 @@ export const todolistAPI = {
   },
   getTasks(todolistId: string) {
     return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`,)
+  },
+  createTask(todolistId: string, title: string) {
+    return instance.post<ResponseType>(`todo-lists/${todolistId}/tasks`, {title})
+  },
+  updateTask(todolistId: string, taskId: string, model: UpdateTaskModel) {
+    return instance.put<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`, {...model})
   },
   deleteTasks(todolistId: string, taskId: string) {
     return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`,)
