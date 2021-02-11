@@ -132,8 +132,13 @@ export const CreateTask = () => {
 export const UpdateTask = () => {
   const [state, setState] = useState<any>(null)
   const [todolistId, setTodolistId] = useState<any>('')
-  const [taskId, setTaskId] = useState<any>('')
-  const [title, setTitle] = useState<any>('')
+  const [taskId, setTaskId] = useState<string>('')
+  const [title, setTitle] = useState<string>('')
+  const [description, setDiscription] = useState<string>('')
+  const [status, setStatus] = useState<number>(0)
+  const [priority, setPriority] = useState<number>(0)
+  const [startDate, setStartDate] = useState<string>('')
+  const [deadline, setDeadline] = useState<string>('')
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setTodolistId(e.currentTarget.value)
@@ -144,8 +149,23 @@ export const UpdateTask = () => {
   const onChangeTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.currentTarget.value)
   }
+  const onChangeDiscrHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setDiscription(e.currentTarget.value)
+  }
+  const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setStatus(+e.currentTarget.value)
+  }
+  const onChangePriorityHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setPriority(+e.currentTarget.value)
+  }
+  const onChangeDateHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setStartDate(e.currentTarget.value)
+  }
+  const onChangeDeadlineeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setDeadline(e.currentTarget.value)
+  }
   const updateTask = () => {
-    todolistAPI.updateTask(todolistId, taskId, {title})
+    todolistAPI.updateTask(todolistId, taskId, {title, deadline, description, priority, startDate, status})
       .then(res => {
         setState(res.data);
       })
@@ -155,7 +175,12 @@ export const UpdateTask = () => {
     <div> {JSON.stringify(state)}</div>
     <input type="text" value={todolistId} onChange={onChangeHandler}/>
     <input type="text" value={taskId} onChange={onChangeTaskIdHandler}/>
-    <input type="text" value={title} onChange={onChangeTitleHandler}/>
+    <input type="text" value={title} placeholder={title} onChange={onChangeTitleHandler}/>
+    <input type="text" value={description} placeholder={description} onChange={onChangeDiscrHandler}/>
+    <input type="text" value={status} placeholder={status.toString()} onChange={onChangeStatusHandler}/>
+    <input type="text" value={priority} placeholder={priority.toString()} onChange={onChangePriorityHandler}/>
+    <input type="text" value={startDate} placeholder={startDate} onChange={onChangeDateHandler}/>
+    <input type="text" value={deadline} placeholder={deadline} onChange={onChangeDeadlineeHandler}/>
     <button onClick={updateTask}>x</button>
   </>
 }
