@@ -1,10 +1,10 @@
 import {
-  addTodolistAC, changeTodolistFilterAC,
-  ChangeTodolistFilterActionType,
+  addTodolistAC,
+  changeTodolistFilterAC,
   changeTodolistTittleAC,
   removeTodolistAC,
   todolistsReducer
-} from './todolists-reducer';
+} from '../state/todolists-reducer';
 import {v1} from 'uuid';
 import {FilterValuesType, TodoListType} from '../App';
 

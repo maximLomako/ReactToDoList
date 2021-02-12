@@ -1,25 +1,22 @@
 import React, {useCallback} from 'react';
-import './App.css';
-import {TaskType, Todolist} from "./Todolist";
+import '../App.css';
+import {Todolist} from "./Todolist";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import {
   addTodolistAC,
   changeTodolistFilterAC,
   changeTodolistTittleAC,
-  removeTodolistAC
-} from "./state/todolists-reducer";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks-reducer";
+  removeTodolistAC,
+  FilterValuesType, TodolistDomainType
+} from "../state/todolists-reducer";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "../state/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./state/store";
+import {AppRootStateType} from "../state/store";
 import {AddItemForm} from "./AddItemForm";
+import {TaskStatuses, TaskType} from "../api/todolists-api";
 
-export type FilterValuesType = 'all' | 'completed' | 'active';
-export type TodoListType = {
-  id: string
-  title: string
-  filter: 'all' | 'completed' | 'active'
-}
+
 export type TaskStateType = {
   [key: string]: Array<TaskType>
 }
@@ -27,7 +24,7 @@ export type TaskStateType = {
 function AppWithRedux() {
 
   const dispatch = useDispatch();
-  const todolists = useSelector<AppRootStateType, Array<TodoListType>>(state => state.todolists);
+  const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists);
   const tasks = useSelector<AppRootStateType, TaskStateType>(state => state.tasks);
 
   const addTask = useCallback((title: string, todolistId: string) => {
@@ -36,8 +33,8 @@ function AppWithRedux() {
   const removeTask = useCallback((id: string, todolistId: string) => {
     dispatch(removeTaskAC(id, todolistId));
   }, [dispatch]);
-  const changeStatus = useCallback((taskId: string, isDone: boolean, todolistId: string) => {
-    dispatch(changeTaskStatusAC(taskId, isDone, todolistId));
+  const changeStatus = useCallback((taskId: string, status: TaskStatuses, todolistId: string) => {
+    dispatch(changeTaskStatusAC(taskId, status, todolistId));
   }, [dispatch]);
   const changeTaskTitle = useCallback((taskId: string, newTitle: string, todolistId: string) => {
     dispatch(changeTaskTitleAC(taskId, newTitle, todolistId));
